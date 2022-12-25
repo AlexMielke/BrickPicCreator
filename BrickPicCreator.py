@@ -654,7 +654,7 @@ class MainWindow(QMainWindow):
         pass
 
     def OpenHelp(self):
-        print('Hilfe')
+        print('Hilfe...')
 
     def PrintManual(self):
         pass
