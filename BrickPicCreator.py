@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComb
                                QSizePolicy, QSlider, QTabWidget, QTableWidget, QTableWidgetItem,
                                QWidget, QFileDialog, QDialog, QDialogButtonBox, QTextBrowser)
 from functions import *
-from bricks import BrickSizes
+from bricks import BrickSizes, ColourCodes
 
 
 class AboutDialog(QDialog):
@@ -53,8 +53,8 @@ class AboutDialog(QDialog):
                                  "<p style=\" text-align: center;font-size:18px;\"><br /> Klemmsteinbilder einfach erstellen!</p>"
                                  "<p style=\" text-align: center;font-size:12px;\">BrickPicCreator erstellt aus einem beliebig großen <br />Bild eine Steinliste und benötigte Anleitung <br /> Effiziente Berechnung um die Anzahl der Steine zu minimieren!</p>\n"
                                  "<p style=\" text-align: center;font-size:6px;\"></p>\n"
-                                 "<p style=\" text-align: center;font-size:10px;\">Written in Python 3.10.8 <br />with PySide6 (v6.4.1) as only 3rd party module</p>\n"
-                                 "<p style=\" text-align: center;font-size:10px;\">Other modules used: os, sys, numpy</p>\n"
+                                 "<p style=\" text-align: center;font-size:10px;\">Written in Python 3.10.8 <br />with PySide6 (v6.4.1), fpdf, NumPy and Pillow PIL</p>\n"
+                                 "<p style=\" text-align: center;font-size:10px;\">Other modules used: os, sys</p>\n"
                                  "<p style=\" text-align: center;font-size:12px;\">(c) 2022 Alexander Mielke (<a href=\"mailto:alexandermielke@t-online.de\"><span style=\" text-decoration: underline; color:#2eb8e6;\">alexandermielke@t-online.de</span></a>)</p>\n"
                                  "<p style=\" text-align: center;font-size:12px;\"><a href=\"https://github.com/AlexMielke\"><span style=\" text-decoration: underline; color:#2eb8e6;\">GitHub-Repository</span></a></p>\n"
                                  "<p style=\" text-align: center;font-size:12px;\">Licence MIT Licence (see Licence file)</p></body></html>")
@@ -423,24 +423,21 @@ class MainWindow(QMainWindow):
         self.GB_BrickListe = QGroupBox(self.GB_Results)
         self.GB_BrickListe.setObjectName(u"GB_BrickListe")
         self.GB_BrickListe.setGeometry(QRect(10, 20, 431, 321))
-
         self.BrickListe = QTableWidget(self.GB_BrickListe)
         self.BrickListe.setObjectName(u"BrickListe")
         self.BrickListe.setGeometry(QRect(10, 30, 411, 281))
         self.BrickListe.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.BrickListe.verticalHeader().setVisible(False)
-
-        self.BrickListe.setColumnCount(5)
+        self.BrickListe.setColumnCount(6)
         self.BrickListe.setRowCount(10)
         header = self.BrickListe.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)
-
-        self.BrickListe.setHorizontalHeaderLabels(['Anzahl', 'Bricks', 'Art-Nr.', 'Farbnr.', 'Farbname'])
-
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
+        self.BrickListe.setHorizontalHeaderLabels(['Anzahl', 'Bricks', 'Art-Nr.', 'Farbnr.', 'Farbname Deutsch', 'Farbname Englisch'])
         self.GB_ManPreview = QGroupBox(self.GB_Results)
         self.GB_ManPreview.setObjectName(u"GB_ManPreview")
         self.GB_ManPreview.setGeometry(QRect(450, 20, 451, 361))
@@ -473,7 +470,6 @@ class MainWindow(QMainWindow):
         self.menuAnleitung = QMenu(self.menubar)
         self.menuAnleitung.setObjectName(u"menuAnleitung")
         self.setMenuBar(self.menubar)
-
         self.menubar.addAction(self.menuStart.menuAction())
         self.menubar.addAction(self.menuPicture.menuAction())
         self.menubar.addAction(self.menuBrickListe.menuAction())
@@ -493,9 +489,7 @@ class MainWindow(QMainWindow):
         self.menuBrickListe.addAction(self.actionBLDrucken)
         self.menuAnleitung.addAction(self.actionManSpeichern)
         self.menuAnleitung.addAction(self.actionManDrucken)
-
         self.retranslateUi()
-
         self.actionBeenden.triggered.connect(self.close)
         self.actionAbout_BrickPicCreator.triggered.connect(self.OpenAbout)
         self.actionBLDrucken.triggered.connect(self.PrintBrickList)
@@ -521,9 +515,7 @@ class MainWindow(QMainWindow):
         self.pb_SaveBrickPic.clicked.connect(self.SaveBrickPic)
         self.pb_SaveBrickList.clicked.connect(self.SaveBrickList)
         self.pb_SaveBrickMan.clicked.connect(self.SaveManual)
-
         QMetaObject.connectSlotsByName(self)
-    # setupUi
 
     def retranslateUi(self):
         self.setWindowTitle(QCoreApplication.translate("self", u"BrickPicCreator", None))
@@ -654,7 +646,7 @@ class MainWindow(QMainWindow):
         pass
 
     def OpenHelp(self):
-        print('Hilfe...')
+        pass
 
     def PrintManual(self):
         pass
@@ -663,13 +655,13 @@ class MainWindow(QMainWindow):
         pass
 
     def NewProject(self):
-        pass
+        self.setupUi()
 
     def OpenProject(self):
-        print('Sollte funktionieren!')
+        pass
 
     def SaveProject(self):
-        print('Sollte funktionieren!')
+        pass
 
     def OpenOriginalPicture(self):
         cwd = os.getcwd()
@@ -861,18 +853,32 @@ class MainWindow(QMainWindow):
         return pbl
 
     def CreateBrickList_Man(self):
+        # First list of all possible bricks depending on chosen sizes
         self.arrlist = self.GetPossibleBricks()
-        x = get_array_from_image('graphics/brickpic.png')
-        self.bricklist_result = get_steine_liste_mit_pos(x, self.arrlist)
+        # Convert the created small brick image (resolution is 1 brick per pixel) to numpy ndarray
+        self.imarray = get_array_from_image('graphics/brickpic.png')
+        # Create list with best fitted bricks, as few as possipble
+        self.bricklist_result = get_steine_liste_mit_pos(self.imarray, self.arrlist)
+        # prettify the brick list for presentation
         self.shopping_list = get_shopping_list(self.bricklist_result)
+        # Send prettified list to Ui QTableWidget
         self.BrickListe.setRowCount(len(self.shopping_list))
-        for col in range(len(self.shopping_list[1])-1):
+        for col in range(len(self.shopping_list[1])):
             for row in range(len(self.shopping_list)):
                 cellItem = QTableWidgetItem()
                 cellItem.setText(str(self.shopping_list[row][col]))
                 if col < 4:
                     cellItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
                 self.BrickListe.setItem(row, col, cellItem)
+        # Create Manual
+        width, height, _ = self.imarray.shape
+        manual_list = [e+ColourCodes[e[2]] for e in self.bricklist_result]
+        self.man_image_pixmap = get_ManualImage(width, height, manual_list)
+        pixmap = QPixmap.fromImage(self.man_image_pixmap)
+        self.manpreview.setPixmap(pixmap.scaled(431, 321, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+
+        self.pb_SaveBrickList.setEnabled(True)
+        self.pb_SaveBrickMan.setEnabled(True)
 
     def SaveBrickPic(self):
         cwd = os.getcwd()
@@ -881,7 +887,7 @@ class MainWindow(QMainWindow):
         filters = ';;'.join(filters)
         old = self.BrickPicFilename
         self.BrickPicFilename = None
-        self.BrickPicFilename = QFileDialog.getSaveFileName(self, "Choose a filename", cwd+'/BrickPic.png', filters, selectedFilter)
+        self.BrickPicFilename = QFileDialog.getSaveFileName(self, "BrickPic speichern...", cwd+'/BrickPic.png', filters, selectedFilter)
         if self.BrickPicFilename[0]:
             self.brick_pic_label.setText(self.BrickPicFilename[0])
             SaveBrickPicAs(self.BrickPicFilename[0], self.BrickPicFilename[1])
@@ -889,10 +895,15 @@ class MainWindow(QMainWindow):
             self.BrickPicFilename = old
 
     def SaveBrickList(self):
-        pass
+        cwd = os.getcwd()
+        filters = 'PDF (*.pdf)'
+        selectedFilter = 'PDF (pdf)'
+        self.pdfListName = QFileDialog.getSaveFileName(self, "Klemmsteinliste speichern...", cwd, filters, selectedFilter)[0]
+        if self.pdfListName:
+            SaveListAsPDF(self.shopping_list, self.pdfListName.split('.')[0]+'.pdf', f'{self.rasterwidth} x {self.rasterheight}')
 
     def SaveManual(self):
-        pass
+        SaveManualImage(self.man_image_pixmap)
 
 
 if __name__ == "__main__":
