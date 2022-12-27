@@ -1,18 +1,9 @@
 import sys
 import os
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-                           QCursor, QFont, QFontDatabase, QGradient,
-                           QIcon, QImage, QKeySequence, QLinearGradient,
-                           QPainter, QPalette, QPixmap, QRadialGradient,
-                           QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
-                               QFrame, QGroupBox, QHeaderView, QLabel,
-                               QMainWindow, QMenu, QMenuBar, QPushButton,
-                               QSizePolicy, QSlider, QTabWidget, QTableWidget, QTableWidgetItem,
-                               QWidget, QFileDialog, QDialog, QDialogButtonBox, QTextBrowser)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect, QSize, Qt)
+from PySide6.QtGui import (QAction, QFont, QIcon, QPixmap, QCursor)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QFrame, QGroupBox, QHeaderView, QLabel, QMainWindow, QMenu, QMenuBar, QPushButton,
+                               QSizePolicy, QSlider, QTabWidget, QTableWidget, QTableWidgetItem, QWidget, QFileDialog, QDialog, QDialogButtonBox, QTextBrowser)
 from functions import *
 from bricks import BrickSizes, ColourCodes
 
@@ -85,30 +76,10 @@ class MainWindow(QMainWindow):
         self.setTabShape(QTabWidget.Rounded)
         self.actionNew_Project = QAction(self)
         self.actionNew_Project.setObjectName(u"actionNew_Project")
-        self.actionOpen_Project = QAction(self)
-        self.actionOpen_Project.setObjectName(u"actionOpen_Project")
-        self.actionSave_Project = QAction(self)
-        self.actionSave_Project.setObjectName(u"actionSave_Project")
-        self.actionSave_Project_under = QAction(self)
-        self.actionSave_Project_under.setObjectName(u"actionSave_Project_under")
-        self.actionHilfe = QAction(self)
-        self.actionHilfe.setObjectName(u"actionHilfe")
         self.actionAbout_BrickPicCreator = QAction(self)
         self.actionAbout_BrickPicCreator.setObjectName(u"actionAbout_BrickPicCreator")
         self.actionBeenden = QAction(self)
         self.actionBeenden.setObjectName(u"actionBeenden")
-        self.actionOriginalbildOpen = QAction(self)
-        self.actionOriginalbildOpen.setObjectName(u"actionOriginalbildOpen")
-        self.actionBrickPicSave = QAction(self)
-        self.actionBrickPicSave.setObjectName(u"actionBrickPicSave")
-        self.actionBLSpeichern = QAction(self)
-        self.actionBLSpeichern.setObjectName(u"actionBLSpeichern")
-        self.actionBLDrucken = QAction(self)
-        self.actionBLDrucken.setObjectName(u"actionBLDrucken")
-        self.actionManSpeichern = QAction(self)
-        self.actionManSpeichern.setObjectName(u"actionManSpeichern")
-        self.actionManDrucken = QAction(self)
-        self.actionManDrucken.setObjectName(u"actionManDrucken")
         self.centralwidget = QWidget(self)
         self.centralwidget.setObjectName(u"centralwidget")
         self.BrickPicCreation = QGroupBox(self.centralwidget)
@@ -463,50 +434,21 @@ class MainWindow(QMainWindow):
         self.menubar.setFont(font)
         self.menuStart = QMenu(self.menubar)
         self.menuStart.setObjectName(u"menuStart")
-        self.menuPicture = QMenu(self.menubar)
-        self.menuPicture.setObjectName(u"menuPicture")
-        self.menuBrickListe = QMenu(self.menubar)
-        self.menuBrickListe.setObjectName(u"menuBrickListe")
-        self.menuAnleitung = QMenu(self.menubar)
-        self.menuAnleitung.setObjectName(u"menuAnleitung")
         self.setMenuBar(self.menubar)
         self.menubar.addAction(self.menuStart.menuAction())
-        self.menubar.addAction(self.menuPicture.menuAction())
-        self.menubar.addAction(self.menuBrickListe.menuAction())
-        self.menubar.addAction(self.menuAnleitung.menuAction())
         self.menuStart.addAction(self.actionNew_Project)
-        self.menuStart.addAction(self.actionOpen_Project)
-        self.menuStart.addAction(self.actionSave_Project)
-        self.menuStart.addAction(self.actionSave_Project_under)
         self.menuStart.addSeparator()
-        self.menuStart.addAction(self.actionHilfe)
         self.menuStart.addAction(self.actionAbout_BrickPicCreator)
         self.menuStart.addSeparator()
         self.menuStart.addAction(self.actionBeenden)
-        self.menuPicture.addAction(self.actionOriginalbildOpen)
-        self.menuPicture.addAction(self.actionBrickPicSave)
-        self.menuBrickListe.addAction(self.actionBLSpeichern)
-        self.menuBrickListe.addAction(self.actionBLDrucken)
-        self.menuAnleitung.addAction(self.actionManSpeichern)
-        self.menuAnleitung.addAction(self.actionManDrucken)
         self.retranslateUi()
         self.actionBeenden.triggered.connect(self.close)
         self.actionAbout_BrickPicCreator.triggered.connect(self.OpenAbout)
-        self.actionBLDrucken.triggered.connect(self.PrintBrickList)
-        self.actionBLSpeichern.triggered.connect(self.SaveBrickList)
-        self.actionBrickPicSave.triggered.connect(self.SaveBrickPic)
-        self.actionHilfe.triggered.connect(self.OpenHelp)
-        self.actionManDrucken.triggered.connect(self.PrintManual)
-        self.actionManSpeichern.triggered.connect(self.SaveManual)
         self.actionNew_Project.triggered.connect(self.NewProject)
-        self.actionOpen_Project.triggered.connect(self.OpenProject)
-        self.actionSave_Project.triggered.connect(self.SaveProject)
-        self.actionOriginalbildOpen.triggered.connect(self.OpenOriginalPicture)
-        self.actionSave_Project_under.triggered.connect(self.SaveProjectUnder)
-        self.pb_none.clicked.connect(self.Auswahl_1m1)
-        self.pb_small.clicked.connect(self.Auswahl_small)
-        self.pb_mid.clicked.connect(self.Auswahl_mid)
-        self.pb_all.clicked.connect(self.Auswahl_all)
+        self.pb_none.clicked.connect(self.SetPossibleBricksTo1m1)
+        self.pb_small.clicked.connect(self.SetPossibleBricksToSmall)
+        self.pb_mid.clicked.connect(self.SetPossibleBricksToMid)
+        self.pb_all.clicked.connect(self.SetPossibleBricksToAll)
         self.pb_createBrickPic.clicked.connect(self.CreateBrickPic)
         self.pb_createBrickList_Man.clicked.connect(self.CreateBrickList_Man)
         self.pb_OpenOriginalbild.clicked.connect(self.OpenOriginalPicture)
@@ -520,18 +462,8 @@ class MainWindow(QMainWindow):
     def retranslateUi(self):
         self.setWindowTitle(QCoreApplication.translate("self", u"BrickPicCreator", None))
         self.actionNew_Project.setText(QCoreApplication.translate("self", u"Neues Projekt", None))
-        self.actionOpen_Project.setText(QCoreApplication.translate("self", u"Projekt \u00f6ffnen...", None))
-        self.actionSave_Project.setText(QCoreApplication.translate("self", u"Projekt speichern", None))
-        self.actionSave_Project_under.setText(QCoreApplication.translate("self", u"Projekt speichern unter...", None))
-        self.actionHilfe.setText(QCoreApplication.translate("self", u"Hilfe...", None))
         self.actionAbout_BrickPicCreator.setText(QCoreApplication.translate("self", u"\u00dcber BrickPicCreator...", None))
         self.actionBeenden.setText(QCoreApplication.translate("self", u"Beenden", None))
-        self.actionOriginalbildOpen.setText(QCoreApplication.translate("self", u"Originalbild \u00f6ffnen...", None))
-        self.actionBrickPicSave.setText(QCoreApplication.translate("self", u"BrickPic speichern...", None))
-        self.actionBLSpeichern.setText(QCoreApplication.translate("self", u"Speichern...", None))
-        self.actionBLDrucken.setText(QCoreApplication.translate("self", u"Drucken...", None))
-        self.actionManSpeichern.setText(QCoreApplication.translate("self", u"Speichern...", None))
-        self.actionManDrucken.setText(QCoreApplication.translate("self", u"Drucken...", None))
         self.BrickPicCreation.setTitle(QCoreApplication.translate("self", u"Bilderstellung", None))
         self.GB_Original.setTitle(QCoreApplication.translate("self", u"Originalbild", None))
         self.original_pic.setText(QCoreApplication.translate("self", u"Kein Originalbild...", None))
@@ -603,29 +535,21 @@ class MainWindow(QMainWindow):
         self.pb_SaveBrickList.setText(QCoreApplication.translate("self", u"BrickListe speichern...", None))
         self.pb_SaveBrickMan.setText(QCoreApplication.translate("self", u"Anleitung speichern...", None))
         self.menuStart.setTitle(QCoreApplication.translate("self", u"Datei", None))
-        self.menuPicture.setTitle(QCoreApplication.translate("self", u"Bilder", None))
-        self.menuBrickListe.setTitle(QCoreApplication.translate("self", u"BrickListe", None))
-        self.menuAnleitung.setTitle(QCoreApplication.translate("self", u"Anleitung", None))
 
     def OpenAbout(self):
         about.show()
 
-    def PrintBrickList(self):
-        pass
-
-    def SaveBrickList(self):
-        pass
-
     def Set_Palette_Text(self):
-        value = self.pic_size_slider.value()
-        w = self.pixmapsize.width()
-        h = self.pixmapsize.height()
-        startwidth = 1
-        self.rasterwidth = startwidth*value
-        self.rasterheight = int((startwidth*value*h)/w)
-        self.bpsize.setText(f'{self.rasterwidth} x {self.rasterheight} Steinfelder')
-        self.stonecount.setText(f'{self.rasterwidth*self.rasterheight:,}'.replace(',', '.')+' Steinfelder')
-        self.bpsize_metric_2.setText(f'{self.rasterwidth*0.78:.2f}'.replace('.', ',')+' x '+f'{self.rasterheight*0.78:.2f}'.replace('.', ',')+' cm')
+        if self.original_pic:
+            value = self.pic_size_slider.value()
+            w = self.pixmapsize.width()
+            h = self.pixmapsize.height()
+            startwidth = 1
+            self.rasterwidth = startwidth*value
+            self.rasterheight = int((startwidth*value*h)/w)
+            self.bpsize.setText(f'{self.rasterwidth} x {self.rasterheight} Steinfelder')
+            self.stonecount.setText(f'{self.rasterwidth*self.rasterheight:,}'.replace(',', '.')+' Steinfelder')
+            self.bpsize_metric_2.setText(f'{self.rasterwidth*0.78:.2f}'.replace('.', ',')+' x '+f'{self.rasterheight*0.78:.2f}'.replace('.', ',')+' cm')
 
     def SetColourPalette(self):
         self.chosen_palette_number = self.PaletteChoice.currentIndex()
@@ -642,26 +566,8 @@ class MainWindow(QMainWindow):
         self.pb_createBrickPic.setEnabled(True)
         self.Set_Palette_Text()
 
-    def SaveBrickPic(self):
-        pass
-
-    def OpenHelp(self):
-        pass
-
-    def PrintManual(self):
-        pass
-
-    def SaveManual(self):
-        pass
-
     def NewProject(self):
         self.setupUi()
-
-    def OpenProject(self):
-        pass
-
-    def SaveProject(self):
-        pass
 
     def OpenOriginalPicture(self):
         cwd = os.getcwd()
@@ -673,10 +579,7 @@ class MainWindow(QMainWindow):
         if self.chosen_palette_number >= 0:
             self.Set_Palette_Text()
 
-    def SaveProjectUnder(self):
-        pass
-
-    def Auswahl_1m1(self):
+    def SetPossibleBricksTo1m1(self):
         self.cb1m2.setChecked(False)
         self.cb1m3.setChecked(False)
         self.cb1m4.setChecked(False)
@@ -712,7 +615,7 @@ class MainWindow(QMainWindow):
         self.cb8m16.setChecked(False)
         self.cb16m16.setChecked(False)
 
-    def Auswahl_small(self):
+    def SetPossibleBricksToSmall(self):
         self.cb1m2.setChecked(True)
         self.cb1m3.setChecked(True)
         self.cb1m4.setChecked(True)
@@ -722,7 +625,7 @@ class MainWindow(QMainWindow):
         self.cb3m3.setChecked(True)
         self.cb4m4.setChecked(True)
 
-    def Auswahl_mid(self):
+    def SetPossibleBricksToMid(self):
         self.cb1m5.setChecked(True)
         self.cb1m6.setChecked(True)
         self.cb1m8.setChecked(True)
@@ -734,7 +637,7 @@ class MainWindow(QMainWindow):
         self.cb6m8.setChecked(True)
         self.cb8m8.setChecked(True)
 
-    def Auswahl_all(self):
+    def SetPossibleBricksToAll(self):
         self.cb1m2.setChecked(True)
         self.cb1m3.setChecked(True)
         self.cb1m4.setChecked(True)
@@ -779,7 +682,7 @@ class MainWindow(QMainWindow):
         self.pb_SaveBrickPic.setEnabled(True)
         self.pb_createBrickList_Man.setEnabled(True)
 
-    def GetPossibleBricks(self):
+    def GetListOfPossibleBricks(self):
         pbl = []
         pbl.extend(BrickSizes['1x1'])
         if self.cb1m2.isChecked():
@@ -853,8 +756,9 @@ class MainWindow(QMainWindow):
         return pbl
 
     def CreateBrickList_Man(self):
+        # QCursor.setShape(Qt.CursorShape.WaitCursor)
         # First list of all possible bricks depending on chosen sizes
-        self.arrlist = self.GetPossibleBricks()
+        self.arrlist = self.GetListOfPossibleBricks()
         # Convert the created small brick image (resolution is 1 brick per pixel) to numpy ndarray
         self.imarray = get_array_from_image('graphics/brickpic.png')
         # Create list with best fitted bricks, as few as possipble
@@ -879,6 +783,7 @@ class MainWindow(QMainWindow):
 
         self.pb_SaveBrickList.setEnabled(True)
         self.pb_SaveBrickMan.setEnabled(True)
+        # QCursor.setShape(Qt.CursorShape.ArrowCursor)
 
     def SaveBrickPic(self):
         cwd = os.getcwd()
@@ -898,12 +803,17 @@ class MainWindow(QMainWindow):
         cwd = os.getcwd()
         filters = 'PDF (*.pdf)'
         selectedFilter = 'PDF (pdf)'
-        self.pdfListName = QFileDialog.getSaveFileName(self, "Klemmsteinliste speichern...", cwd, filters, selectedFilter)[0]
+        self.pdfListName = QFileDialog.getSaveFileName(self, "Brickliste speichern...", cwd, filters, selectedFilter)[0]
         if self.pdfListName:
             SaveListAsPDF(self.shopping_list, self.pdfListName.split('.')[0]+'.pdf', f'{self.rasterwidth} x {self.rasterheight}')
 
     def SaveManual(self):
-        SaveManualImage(self.man_image_pixmap)
+        cwd = os.getcwd()
+        filters = 'PDF (*.pdf)'
+        selectedFilter = 'PDF (pdf)'
+        self.ManualFilename = QFileDialog.getSaveFileName(self, "Anleitung speichern...", cwd, filters, selectedFilter)[0]
+        if self.ManualFilename:
+            SaveManualImage(self.man_image_pixmap, self.ManualFilename.split('.')[0]+'.pdf')
 
 
 if __name__ == "__main__":

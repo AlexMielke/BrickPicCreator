@@ -246,9 +246,9 @@ def SaveListAsPDF(l, filename, rastersize):
     pdf.output(filename)
 
 
-def SaveManualImage(pixmap):
+def SaveManualImage(pixmap, filename):
     image = Image.fromqpixmap(pixmap)
-    image.save(r'manual.pdf')
+    image.save(filename)
 
 
 def main():
